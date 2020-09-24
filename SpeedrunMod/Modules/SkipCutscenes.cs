@@ -177,6 +177,31 @@ namespace SpeedrunMod.Modules {
                 case "Control" when self.name == "Crystal Shaman":
                     self.GetState("Land Hero").ChangeTransition("FINISHED", "Get PlayerData 2");
                     break;
+
+                // dream nail cutscene enter
+                case "Conversation Control" when self.name == "Dreamer Plaque Inspect":
+                    self.GetState("Hero Anim").ChangeTransition("FINISHED", "Map Msg?");
+                    break;
+                case "Control" when self.name == "Dreamer Scene 2":
+                    self.GetState("Fade Out").GetAction<Wait>().time = 1;
+                    self.GetState("Take Control").ChangeTransition("FINISHED", "Fade Out");
+                    self.GetState("Fade Out").ChangeTransition("FINISHED", "Set Compass Point");
+                    break;
+
+                // gruz mother
+                case "corpse" when self.name == "Corpse Big Fly 1(Clone)":
+                    self.GetState("Init").GetAction<Wait>().time = 0;
+                    self.GetState("Steam").GetAction<Wait>().time = 0;
+                    self.GetState("Ready").GetAction<Wait>().time = 0;
+                    break;
+                case "burster" when self.name == "Corpse Big Fly Burster(Clone)":
+                    self.GetState("Landed").RemoveAction<Wait>();
+                    self.GetState("Stop Emit").RemoveAction<Wait>();
+                    self.GetState("Stop").RemoveAction<Wait>();
+                    self.GetState("Gurg 1").RemoveAction<Wait>();
+                    self.GetState("Burst").RemoveAction<Wait>();
+                    self.GetState("State 1").RemoveAction<Wait>();
+                    break;
             }
 
             orig(self);
