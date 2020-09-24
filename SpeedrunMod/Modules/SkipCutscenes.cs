@@ -36,7 +36,7 @@ namespace SpeedrunMod.Modules {
             nameof(PlayerData.corn_outskirtsLeft),
             nameof(PlayerData.corn_royalGardensLeft),
             nameof(PlayerData.corn_abyssLeft),
-            nameof(PlayerData.metIselda),
+            nameof(PlayerData.metIselda)
         };
 
         // Boss cutscenes, mostly.
@@ -65,7 +65,7 @@ namespace SpeedrunMod.Modules {
             On.GameManager.FadeSceneInWithDelay += NoFade;
             ModHooks.Instance.NewGameHook += OnNewGame;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += FsmSkips;
-            On.PlayMakerFSM.OnEnable += ModifyFSM;
+            On.PlayMakerFSM.OnEnable += ModifyFsm;
         }
 
         public override void Unload() {
@@ -78,7 +78,7 @@ namespace SpeedrunMod.Modules {
             On.GameManager.FadeSceneInWithDelay -= NoFade;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= FsmSkips;
             ModHooks.Instance.NewGameHook -= OnNewGame;
-            On.PlayMakerFSM.OnEnable -= ModifyFSM;
+            On.PlayMakerFSM.OnEnable -= ModifyFsm;
         }
 
         private static void OnNewGame() {
@@ -103,7 +103,7 @@ namespace SpeedrunMod.Modules {
             orig(self);
         }
 
-        private static void ModifyFSM(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self) {
+        private static void ModifyFsm(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self) {
             switch (self.FsmName) {
                 // vengful spirit pickup
                 case "Get Fireball" when self.name == "Knight Get Fireball":
@@ -214,7 +214,7 @@ namespace SpeedrunMod.Modules {
 
             hc.StartCoroutine(DreamerFsm(arg1));
             hc.StartCoroutine(AbsRadSkip(arg1));
-            hc.StartCoroutine(HKPrimeSkip(arg1));
+            hc.StartCoroutine(PureVesselPrimeSkip(arg1));
             hc.StartCoroutine(StatueWait(arg1));
             hc.StartCoroutine(StagCutscene());
             hc.StartCoroutine(AbyssShriekPickup(arg1));
@@ -248,9 +248,9 @@ namespace SpeedrunMod.Modules {
             if (grate == null)
                 yield break;
 
-            var grate_anim = grate.GetComponent<tk2dSpriteAnimator>();
+            var grateAnim = grate.GetComponent<tk2dSpriteAnimator>();
 
-            grate_anim.GetClipByName("Grate_disappear").fps = 600;
+            grateAnim.GetClipByName("Grate_disappear").fps = 600;
         }
 
         private static IEnumerator StatueWait(Scene arg1) {
@@ -264,7 +264,7 @@ namespace SpeedrunMod.Modules {
             }
         }
 
-        private static IEnumerator HKPrimeSkip(Scene arg1) {
+        private static IEnumerator PureVesselPrimeSkip(Scene arg1) {
             if (arg1.name != "GG_Hollow_Knight") yield break;
 
             yield return null;

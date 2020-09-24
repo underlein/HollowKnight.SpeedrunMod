@@ -17,15 +17,15 @@ namespace SpeedrunMod.Modules {
             InputHandler input = ReflectionHelper.GetAttr<HeroController, InputHandler>(HeroController.instance, "inputHandler");
 
             if (input.inputActions.left.IsPressed || input.inputActions.right.IsPressed) {
-                ref bool down_enabled = ref Mirror.GetFieldRef<OneAxisInputControl, bool>(input.inputActions.down, "Enabled");
+                ref bool downEnabled = ref Mirror.GetFieldRef<OneAxisInputControl, bool>(input.inputActions.down, "Enabled");
 
-                bool orig_enabled = down_enabled;
+                bool origEnabled = downEnabled;
 
-                down_enabled = false;
+                downEnabled = false;
 
                 orig(self);
 
-                down_enabled = orig_enabled;
+                downEnabled = origEnabled;
             } else {
                 orig(self);
             }

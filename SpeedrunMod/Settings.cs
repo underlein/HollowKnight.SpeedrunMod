@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Modding;
 using UnityEngine;
+using Vasi;
 
 namespace SpeedrunMod {
     public class Settings : ModSettings, ISerializationCallbackReceiver {
@@ -21,31 +22,27 @@ namespace SpeedrunMod {
         }
 
         public void OnBeforeSerialize() {
-            foreach (KeyValuePair<FieldInfo, Type> pair in _fields) {
-                FieldInfo fi = pair.Key;
-
+            foreach ((FieldInfo fi, Type type) in _fields) {
                 if (fi.FieldType == typeof(bool)) {
-                    BoolValues[$"{pair.Value.Name}:{fi.Name}"] = (bool) fi.GetValue(null);
+                    BoolValues[$"{type.Name}:{fi.Name}"] = (bool) fi.GetValue(null);
                 } else if (fi.FieldType == typeof(float)) {
-                    FloatValues[$"{pair.Value.Name}:{fi.Name}"] = (float) fi.GetValue(null);
+                    FloatValues[$"{type.Name}:{fi.Name}"] = (float) fi.GetValue(null);
                 } else if (fi.FieldType == typeof(int)) {
-                    IntValues[$"{pair.Value.Name}:{fi.Name}"] = (int) fi.GetValue(null);
+                    IntValues[$"{type.Name}:{fi.Name}"] = (int) fi.GetValue(null);
                 }
             }
         }
 
         public void OnAfterDeserialize() {
-            foreach (KeyValuePair<FieldInfo, Type> pair in _fields) {
-                FieldInfo fi = pair.Key;
-
+            foreach ((FieldInfo fi, Type type) in _fields) {
                 if (fi.FieldType == typeof(bool)) {
-                    if (BoolValues.TryGetValue($"{pair.Value.Name}:{fi.Name}", out bool val))
+                    if (BoolValues.TryGetValue($"{type.Name}:{fi.Name}", out bool val))
                         fi.SetValue(null, val);
                 } else if (fi.FieldType == typeof(float)) {
-                    if (FloatValues.TryGetValue($"{pair.Value.Name}:{fi.Name}", out float val))
+                    if (FloatValues.TryGetValue($"{type.Name}:{fi.Name}", out float val))
                         fi.SetValue(null, val);
                 } else if (fi.FieldType == typeof(int)) {
-                    if (IntValues.TryGetValue($"{pair.Value.Name}:{fi.Name}", out int val))
+                    if (IntValues.TryGetValue($"{type.Name}:{fi.Name}", out int val))
                         fi.SetValue(null, val);
                 }
             }

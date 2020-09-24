@@ -20,7 +20,7 @@ namespace SpeedrunMod.Modules {
             (typeof(UIManager), "<GoToProfileMenu>c__Iterator5", DecreaseWait),
             (typeof(GameManager), "<PauseGameToggle>c__IteratorA", PauseGameToggle),
             (typeof(GameManager), "<RunContinueGame>c__Iterator10", RunContinueGame),
-            (typeof(SaveSlotButton), "<AnimateToSlotState>c__Iterator2", DecreaseWait),
+            (typeof(SaveSlotButton), "<AnimateToSlotState>c__Iterator2", DecreaseWait)
         };
 
         private readonly List<ILHook> _hooked = new List<ILHook>();

@@ -43,7 +43,7 @@ namespace SpeedrunMod.Modules {
             On.HeroController.CanQuickMap += CanQuickMap;
             On.TutorialEntryPauser.Start += AllowPause;
             On.HeroController.ShouldHardLand += CanHardLand;
-            On.PlayMakerFSM.OnEnable += ModifyFSM;
+            On.PlayMakerFSM.OnEnable += ModifyFsm;
             On.InputHandler.Update += EnableSuperslides;
             ModHooks.Instance.ObjectPoolSpawnHook += OnObjectPoolSpawn;
             USceneManager.activeSceneChanged += SceneChanged;
@@ -54,7 +54,7 @@ namespace SpeedrunMod.Modules {
             On.HeroController.CanQuickMap -= CanQuickMap;
             On.TutorialEntryPauser.Start -= AllowPause;
             On.HeroController.ShouldHardLand -= CanHardLand;
-            On.PlayMakerFSM.OnEnable -= ModifyFSM;
+            On.PlayMakerFSM.OnEnable -= ModifyFsm;
             On.InputHandler.Update -= EnableSuperslides;
             ModHooks.Instance.ObjectPoolSpawnHook -= OnObjectPoolSpawn;
             USceneManager.activeSceneChanged -= SceneChanged;
@@ -120,7 +120,7 @@ namespace SpeedrunMod.Modules {
             return !NoHardFalls && orig(self, collision);
         }
 
-        private static void ModifyFSM(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self) {
+        private static void ModifyFsm(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self) {
             switch (self.FsmName) {
                 case "Control" when self.name == "Initial Fall Impact" && NoHardFalls: {
                     self.ChangeTransition("Idle", "LAND", "Return Control");
@@ -219,20 +219,20 @@ namespace SpeedrunMod.Modules {
 
             GameObject chunk = GameObject.Find("Chunk 1 1");
 
-            var lever_go = new GameObject
+            var leverGo = new GameObject
             (
                 "Ruins Lever",
                 typeof(Lever),
                 typeof(BoxCollider2D)
             );
 
-            lever_go.transform.position = new Vector3(38f, 56.7f);
-            lever_go.layer = (int) PhysLayers.TERRAIN;
+            leverGo.transform.position = new Vector3(38f, 56.7f);
+            leverGo.layer = (int) PhysLayers.TERRAIN;
 
-            var lever = lever_go.GetComponent<Lever>();
+            var lever = leverGo.GetComponent<Lever>();
             lever.OnHit = () => GameObject.Find("Ruins Gate").LocateMyFSM("Toll Gate").SendEvent("OPEN");
 
-            var bcol = lever_go.GetComponent<BoxCollider2D>();
+            var bcol = leverGo.GetComponent<BoxCollider2D>();
             bcol.size = new Vector2(.4f, .6f);
             bcol.isTrigger = true;
 
@@ -240,7 +240,7 @@ namespace SpeedrunMod.Modules {
             Vector2[] points = {
                 new Vector2(21.4f, 19),
                 new Vector2(21.5f, 16),
-                new Vector2(21.5f, 19),
+                new Vector2(21.5f, 19)
             };
 
             EdgeCollider2D col = chunk
@@ -271,7 +271,7 @@ namespace SpeedrunMod.Modules {
                 nonBounce.gameObject.AddComponent<TinkEffect>().blockEffect = tinkAudio.gameObject;
             }
         }
-        
+
         // extends hazard respawn trigger box upwards through the thorns
         private static IEnumerator QgThornRespawn() {
             yield return null;
