@@ -65,6 +65,7 @@ namespace SpeedrunMod.Modules {
             On.GameManager.FadeSceneInWithDelay += NoFade;
             ModHooks.Instance.NewGameHook += OnNewGame;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += FsmSkips;
+            On.PlayMakerFSM.OnEnable += ModifyFSM;
         }
 
         public override void Unload() {
@@ -77,6 +78,7 @@ namespace SpeedrunMod.Modules {
             On.GameManager.FadeSceneInWithDelay -= NoFade;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= FsmSkips;
             ModHooks.Instance.NewGameHook -= OnNewGame;
+            On.PlayMakerFSM.OnEnable -= ModifyFSM;
         }
 
         private static void OnNewGame() {
@@ -96,6 +98,85 @@ namespace SpeedrunMod.Modules {
         private static void FastEaseColor(On.HutongGames.PlayMaker.Actions.EaseColor.orig_OnEnter orig, EaseColor self) {
             if (self.Owner.name == "Blanker White" && Math.Abs(self.time.Value - 0.3) < .05) {
                 self.time.Value = 0.066f;
+            }
+
+            orig(self);
+        }
+
+        private static void ModifyFSM(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self) {
+            switch (self.FsmName) {
+                // vengful spirit pickup
+                case "Get Fireball" when self.name == "Knight Get Fireball":
+                    self.GetState("Start").GetAction<Wait>().time = 0;
+                    self.GetState("Rumble").GetAction<Wait>().time = 0;
+
+                    self.GetState("Start").RemoveAllOfType<iTweenMoveBy>();
+                    self.GetState("Rumble").RemoveAllOfType<iTweenMoveBy>();
+                    self.GetState("Get").RemoveAllOfType<iTweenMoveBy>();
+                    break;
+                case "Check Fall" when self.name == "Knight Cutscene Animator":
+                    self.GetState("Black").RemoveAction<Wait>();
+                    self.GetState("Fade Back").GetAction<Wait>().time = 3;
+                    break;
+
+                // shade soul pickup
+                case "Get Fireball" when self.name == "Knight Get Fireball Lv2":
+                    self.GetState("Start").GetAction<Wait>().time = 0;
+                    self.GetState("Start").ChangeTransition("FINISHED", "Get PlayerData");
+
+                    self.GetState("Start").RemoveAllOfType<iTweenMoveBy>();
+                    self.GetState("Rumble").RemoveAllOfType<iTweenMoveBy>();
+                    self.GetState("Get").RemoveAllOfType<iTweenMoveBy>();
+                    break;
+
+                // howling wraiths pickup
+                case "Get Scream" when self.name == "Knight Get Scream":
+                    self.GetState("Start").GetAction<Wait>().time = 0.1f;
+                    self.GetState("Fall").GetAction<Wait>().time = 0.3f;
+
+                    self.GetState("Start").ChangeTransition("FINISHED", "Get");
+
+                    self.GetState("Start").RemoveAction<AudioPlayerOneShotSingle>();
+                    self.GetState("Start").RemoveAllOfType<iTweenMoveBy>();
+                    self.GetState("Get").RemoveAllOfType<iTweenMoveBy>();
+                    self.gameObject.GetComponentsInChildren<Transform>().First(transform => transform.name == "Orbs").gameObject.SetActive(false);
+                    break;
+
+                // shade cloak pickup
+                case "Get Shadow Dash" when self.name == "Dish Plat":
+                    self.GetState("Fall").GetAction<Wait>().time = 1;
+                    self.GetState("Fall").ChangeTransition("FINISHED", "UI Msg");
+                    break;
+
+                // desolate dive pickup
+                case "corpse" when self.name == "Corpse Mage Lord 2(Clone)":
+                    self.GetState("Steam").GetAction<Wait>().time = 0;
+                    self.GetState("Ready").GetAction<Wait>().time = 0;
+                    self.GetState("Pause").GetAction<Wait>().time = 0;
+                    self.GetState("Land").GetAction<Wait>().time = 0;
+
+                    self.gameObject.GetComponentsInChildren<Transform>().Where(transform => transform.name == "Soul Breath").ToList().ForEach(transform => transform.gameObject.SetActive(false));
+                    break;
+                case "Pickup" when self.name == "Quake Pickup":
+                    self.GetState("Wait").ChangeTransition("FINISHED", "Appear");
+                    self.GetState("Wait").GetAction<Wait>().time = 0.5f;
+                    break;
+                case "Get Quake" when self.name == "Knight Get Quake":
+                    self.GetState("Start").GetAction<Wait>().time = 0.1f;
+                    self.GetState("Fall").GetAction<Wait>().time = 0.3f;
+
+                    self.GetState("Start").ChangeTransition("FINISHED", "Get");
+
+                    self.GetState("Start").RemoveAction<AudioPlayerOneShotSingle>();
+                    self.GetState("Start").RemoveAllOfType<iTweenMoveBy>();
+                    self.GetState("Get").RemoveAllOfType<iTweenMoveBy>();
+                    self.gameObject.GetComponentsInChildren<Transform>().First(transform => transform.name == "Orbs").gameObject.SetActive(false);
+                    break;
+
+                // descending dark pickup
+                case "Control" when self.name == "Crystal Shaman":
+                    self.GetState("Land Hero").ChangeTransition("FINISHED", "Get PlayerData 2");
+                    break;
             }
 
             orig(self);
