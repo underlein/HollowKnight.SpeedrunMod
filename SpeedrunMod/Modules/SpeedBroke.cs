@@ -207,6 +207,10 @@ namespace SpeedrunMod.Modules {
 
                     break;
                 }
+                case "Fungus3_05": {
+                    HeroController.instance.StartCoroutine(QgThornRespawn());
+                    break;
+                }
             }
         }
 
@@ -266,6 +270,16 @@ namespace SpeedrunMod.Modules {
 
                 nonBounce.gameObject.AddComponent<TinkEffect>().blockEffect = tinkAudio.gameObject;
             }
+        }
+        
+        // extends hazard respawn trigger box upwards through the thorns
+        private static IEnumerator QgThornRespawn() {
+            yield return null;
+
+            BoxCollider2D box = GameObject.Find("Hazard Respawn Trigger v2 (4)").GetComponent<BoxCollider2D>();
+
+            box.size = new Vector2(1, 13.7f); // default: (1.0, 9.7)
+            box.offset = new Vector2(0, 2.4f); // default: (0.0, 0.4)
         }
 
     }
