@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -77,12 +76,8 @@
         <Compile Include="Modules\InfinitePoP.cs" />
         <Compile Include="Modules\LemmSellAll.cs" />
         <Compile Include="Modules\MouseBindings.cs" />
-        <Compile Include="Modules\NoHardSaves.cs" />
-        <Compile Include="Modules\SalubraKiller.cs" />
         <Compile Include="Modules\SkipCutscenes.cs" />
         <Compile Include="Modules\SpeedBroke.cs" />
-        <Compile Include="Modules\UnencryptedSaves.cs" />
-        <Compile Include="SaneUumuu.cs" />
         <Compile Include="SerializeToSetting.cs" />
         <Compile Include="Settings.cs" />
         <Compile Include="SpeedrunMod.cs" />
@@ -99,7 +94,6 @@
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="@echo on" />
         <Exec Command="echo Copying mod" />
-        <Exec
-            Command="copy &quot;$(TargetPath)&quot; &quot;E:\Steam\steamapps\common\Hollow Knight 1432 debug\hollow_knight_Data\Managed\Mods\&quot;" />
+        <Exec Command="copy &quot;$(TargetPath)&quot; &quot;E:\Steam\steamapps\common\Hollow Knight 1432 debug\hollow_knight_Data\Managed\Mods\&quot;" />
     </Target>
 </Project>
