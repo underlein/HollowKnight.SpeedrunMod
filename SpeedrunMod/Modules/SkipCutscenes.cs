@@ -16,28 +16,7 @@ namespace SpeedrunMod.Modules {
     [UsedImplicitly]
     public class SkipCutscenes : FauxMod {
 
-        private const string GUARDIAN = "Dream_Guardian_";
-
         private static readonly string[] DREAMERS = {"Deepnest_Spider_Town", "Fungus3_archive_02", "Ruins2_Watcher_Room"};
-
-        private static readonly string[] ALL_DREAMER_BOOLS = {
-            nameof(PlayerData.corniferAtHome),
-            nameof(PlayerData.iseldaConvo1),
-            nameof(PlayerData.dungDefenderSleeping),
-            nameof(PlayerData.corn_crossroadsLeft),
-            nameof(PlayerData.corn_greenpathLeft),
-            nameof(PlayerData.corn_fogCanyonLeft),
-            nameof(PlayerData.corn_fungalWastesLeft),
-            nameof(PlayerData.corn_cityLeft),
-            nameof(PlayerData.corn_waterwaysLeft),
-            nameof(PlayerData.corn_minesLeft),
-            nameof(PlayerData.corn_cliffsLeft),
-            nameof(PlayerData.corn_deepnestLeft),
-            nameof(PlayerData.corn_outskirtsLeft),
-            nameof(PlayerData.corn_royalGardensLeft),
-            nameof(PlayerData.corn_abyssLeft),
-            nameof(PlayerData.metIselda)
-        };
 
         // Boss cutscenes, mostly.
         private static readonly string[] PD_BOOLS = {
@@ -60,11 +39,10 @@ namespace SpeedrunMod.Modules {
             On.FadeSequence.Begin += FadeBegin;
             On.AnimatorSequence.Begin += AnimatorBegin;
             On.InputHandler.SetSkipMode += OnSetSkip;
-            On.GameManager.BeginSceneTransitionRoutine += Dreamers;
             On.HutongGames.PlayMaker.Actions.EaseColor.OnEnter += FastEaseColor;
             On.GameManager.FadeSceneInWithDelay += NoFade;
             ModHooks.Instance.NewGameHook += OnNewGame;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += FsmSkips;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += SceneChanged;
             On.PlayMakerFSM.OnEnable += ModifyFsm;
         }
 
@@ -73,10 +51,9 @@ namespace SpeedrunMod.Modules {
             On.FadeSequence.Begin -= FadeBegin;
             On.AnimatorSequence.Begin -= AnimatorBegin;
             On.InputHandler.SetSkipMode -= OnSetSkip;
-            On.GameManager.BeginSceneTransitionRoutine -= Dreamers;
             On.HutongGames.PlayMaker.Actions.EaseColor.OnEnter -= FastEaseColor;
             On.GameManager.FadeSceneInWithDelay -= NoFade;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= FsmSkips;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= SceneChanged;
             ModHooks.Instance.NewGameHook -= OnNewGame;
             On.PlayMakerFSM.OnEnable -= ModifyFsm;
         }
@@ -202,25 +179,39 @@ namespace SpeedrunMod.Modules {
                     self.GetState("Burst").RemoveAction<Wait>();
                     self.GetState("State 1").RemoveAction<Wait>();
                     break;
+
+                // dreamer cutscene skip
+                case "Control" when self.name == "Dreamer NPC":
+                    self.GetState("Cinematic").RemoveAction<FindGameObject>();
+                    self.GetState("Cinematic").RemoveAction<SendMessage>();
+                    self.GetState("Cinematic").RemoveAction<FadeAudio>();
+                    self.GetState("Cinematic").AddAction(new NextFrameEvent {
+                        sendEvent = self.GetState("Cinematic").Fsm.GetEvent("CINEMATIC END")
+                    });
+
+                    self.GetState("Set Hegemol").ChangeTransition("FINISHED", "Return");
+                    self.GetState("Set Lurien").ChangeTransition("FINISHED", "Return");
+                    self.GetState("Set Monomon").ChangeTransition("FINISHED", "Return");
+                    break;
             }
 
             orig(self);
         }
 
-        private static void FsmSkips(Scene arg0, Scene arg1) {
+        private static void SceneChanged(Scene from, Scene to) {
             var hc = HeroController.instance;
 
             if (hc == null) return;
 
-            hc.StartCoroutine(DreamerFsm(arg1));
-            hc.StartCoroutine(AbsRadSkip(arg1));
-            hc.StartCoroutine(PureVesselPrimeSkip(arg1));
-            hc.StartCoroutine(StatueWait(arg1));
+            hc.StartCoroutine(AbsRadSkip(to));
+            hc.StartCoroutine(PureVesselPrimeSkip(to));
+            hc.StartCoroutine(StatueWait(to));
             hc.StartCoroutine(StagCutscene());
-            hc.StartCoroutine(AbyssShriekPickup(arg1));
-            hc.StartCoroutine(KingsBrandHornet(arg1));
-            hc.StartCoroutine(KingsBrandAvalanche(arg1));
-            hc.StartCoroutine(BlackEgg(arg1));
+            hc.StartCoroutine(AbyssShriekPickup(to));
+            hc.StartCoroutine(KingsBrandHornet(to));
+            hc.StartCoroutine(KingsBrandAvalanche(to));
+            hc.StartCoroutine(BlackEgg(to));
+            hc.StartCoroutine(DreamerReturn(to));
         }
 
         private static IEnumerator StagCutscene() {
@@ -253,8 +244,8 @@ namespace SpeedrunMod.Modules {
             grateAnim.GetClipByName("Grate_disappear").fps = 600;
         }
 
-        private static IEnumerator StatueWait(Scene arg1) {
-            if (arg1.name != "GG_Workshop") yield break;
+        private static IEnumerator StatueWait(Scene to) {
+            if (to.name != "GG_Workshop") yield break;
 
             foreach (PlayMakerFSM fsm in UObject.FindObjectsOfType<PlayMakerFSM>().Where(x => x.FsmName == "GG Boss UI")) {
                 fsm.GetState("On Left").ChangeTransition("FINISHED", "Dream Box Down");
@@ -264,8 +255,8 @@ namespace SpeedrunMod.Modules {
             }
         }
 
-        private static IEnumerator PureVesselPrimeSkip(Scene arg1) {
-            if (arg1.name != "GG_Hollow_Knight") yield break;
+        private static IEnumerator PureVesselPrimeSkip(Scene to) {
+            if (to.name != "GG_Hollow_Knight") yield break;
 
             yield return null;
 
@@ -277,8 +268,8 @@ namespace SpeedrunMod.Modules {
             control.GetAction<Wait>("Intro Roar", 7).time = 1f;
         }
 
-        private static IEnumerator AbsRadSkip(Scene arg1) {
-            if (arg1.name != "GG_Radiance") yield break;
+        private static IEnumerator AbsRadSkip(Scene to) {
+            if (to.name != "GG_Radiance") yield break;
 
             yield return null;
 
@@ -297,19 +288,8 @@ namespace SpeedrunMod.Modules {
             control.GetAction<Wait>("Title Up", 6).time = 1f;
         }
 
-        private static IEnumerator DreamerFsm(Scene arg1) {
-            if (!DREAMERS.Contains(arg1.name)) yield break;
-
-            yield return null;
-
-            GameObject dreamEnter = GameObject.Find("Dream Enter");
-            if (dreamEnter == null)
-                yield break;
-            dreamEnter.LocateMyFSM("Control").GetState("Idle").ChangeTransition("DREAM HIT", "Change Scene");
-        }
-
-        private static IEnumerator AbyssShriekPickup(Scene arg1) {
-            if (arg1.name != "Abyss_12") yield break;
+        private static IEnumerator AbyssShriekPickup(Scene to) {
+            if (to.name != "Abyss_12") yield break;
 
             yield return null;
 
@@ -319,8 +299,8 @@ namespace SpeedrunMod.Modules {
             shriek.GetState("Land").RemoveAllOfType<Wait>();
         }
 
-        private static IEnumerator KingsBrandHornet(Scene arg1) {
-            if (arg1.name != "Deepnest_East_12") yield break;
+        private static IEnumerator KingsBrandHornet(Scene to) {
+            if (to.name != "Deepnest_East_12") yield break;
 
             yield return null;
 
@@ -331,8 +311,8 @@ namespace SpeedrunMod.Modules {
             hornet.GetState("Land").RemoveAllOfType<Wait>();
         }
 
-        private static IEnumerator KingsBrandAvalanche(Scene arg1) {
-            if (arg1.name != "Room_Wyrm") yield break;
+        private static IEnumerator KingsBrandAvalanche(Scene to) {
+            if (to.name != "Room_Wyrm") yield break;
 
             yield return null;
 
@@ -340,8 +320,8 @@ namespace SpeedrunMod.Modules {
             avalanche.GetState("Fade").GetAction<Wait>().time = 1;
         }
 
-        private static IEnumerator BlackEgg(Scene arg1) {
-            if (arg1.name != "Room_temple") yield break;
+        private static IEnumerator BlackEgg(Scene to) {
+            if (to.name != "Room_temple") yield break;
 
             yield return null;
 
@@ -356,58 +336,13 @@ namespace SpeedrunMod.Modules {
             door.GetState("Roar End").GetAction<Wait>().time = 1;
         }
 
-        private static IEnumerator Dreamers(On.GameManager.orig_BeginSceneTransitionRoutine orig, GameManager self, GameManager.SceneLoadInfo info) {
-            info.EntryDelay = 0f;
-
-            if (info.SceneName.Length <= 15 || info.SceneName.Substring(0, 15) != GUARDIAN) {
-                yield return orig(self, info);
-
-                yield break;
-            }
-
-            string @bool = info.SceneName.Substring(15);
-
-            PlayerData pd = PlayerData.instance;
-
-            pd.SetBool($"{@bool.ToLower()}Defeated", true);
-            pd.SetBool($"maskBroken{@bool}", true);
-            pd.guardiansDefeated++;
-            pd.crossroadsInfected = true;
-
-            if (pd.guardiansDefeated == 3) {
-                pd.mrMushroomState = 1;
-                pd.brettaState++;
-
-                foreach (string pdBool in ALL_DREAMER_BOOLS)
-                    pd.SetBool(pdBool, true);
-            }
-
-            info.SceneName = GameManager.instance.sceneName;
-            info.EntryGateName = "door_dreamReturn";
-
-            GameCameras.instance.cameraFadeFSM.Fsm.Event("FADE INSTANT");
-
-            yield return orig(self, info);
-
-            GameCameras.instance.cameraFadeFSM.Fsm.SetState("FadeIn");
+        private static IEnumerator DreamerReturn(Scene to) {
+            if (!DREAMERS.Contains(to.name) || !HeroController.instance.IsDreamReturning) yield break;
 
             yield return null;
 
-            HeroController.instance.MaxHealth();
-
-            while (GameManager.instance.gameState != GameState.PLAYING) {
-                yield return null;
-            }
-
-            yield return null;
-
-            PlayMakerFSM.BroadcastEvent("BOX DOWN");
-            PlayMakerFSM.BroadcastEvent("BOX DOWN DREAM");
-
-            pd.SetBenchRespawn(UObject.FindObjectOfType<RespawnMarker>(), GameManager.instance.sceneName, 2);
-            GameManager.instance.SaveGame();
-
-            HeroController.instance.AcceptInput();
+            // cancel healing animation
+            GameObject.Find("Knight").LocateMyFSM("Spell Control").SendEvent("FSM CANCEL");
         }
 
         private static void OnSetSkip(On.InputHandler.orig_SetSkipMode orig, InputHandler self, SkipPromptMode newmode) {
