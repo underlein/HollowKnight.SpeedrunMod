@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{3EFA0E41-79AF-49D9-86A8-B6FDB4A65C15}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>SpeedrunMod</RootNamespace>
+        <AssemblyName>SpeedrunMod</AssemblyName>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="Vasi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>E:\Steam\steamapps\common\Hollow Knight 1432 mods\hollow_knight_Data\Managed\Mods\Vasi.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Components\Lever.cs" />
+        <Compile Include="Modules\Dev.cs" />
+        <Compile Include="Modules\FasterLoads.cs" />
+        <Compile Include="Modules\FastMenus.cs" />
+        <Compile Include="Modules\FastText.cs" />
+        <Compile Include="Modules\FauxMod.cs" />
+        <Compile Include="Modules\FixDashmaster.cs" />
+        <Compile Include="Modules\FixFireballs.cs" />
+        <Compile Include="Modules\FixVolume.cs" />
+        <Compile Include="Modules\InfinitePoP.cs" />
+        <Compile Include="Modules\LemmSellAll.cs" />
+        <Compile Include="Modules\MouseBindings.cs" />
+        <Compile Include="Modules\NoHardSaves.cs" />
+        <Compile Include="Modules\SalubraKiller.cs" />
+        <Compile Include="Modules\SkipCutscenes.cs" />
+        <Compile Include="Modules\SpeedBroke.cs" />
+        <Compile Include="Modules\UnencryptedSaves.cs" />
+        <Compile Include="SaneUumuu.cs" />
+        <Compile Include="SerializeToSetting.cs" />
+        <Compile Include="Settings.cs" />
+        <Compile Include="SpeedrunMod.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="@echo on" />
+        <Exec Command="echo Copying mod" />
+        <Exec
+            Command="copy &quot;$(TargetPath)&quot; &quot;E:\Steam\steamapps\common\Hollow Knight 1432 debug\hollow_knight_Data\Managed\Mods\&quot;" />
+    </Target>
+</Project>
