@@ -163,6 +163,16 @@ namespace SpeedrunMod.Modules {
 
                     break;
                 }
+
+                case "break_floor" when self.name == "One Way Wall": {
+                    self.GetState("Idle").GetAction<Trigger2dEvent>().trigger = PlayMakerUnity2d.Trigger2DType.OnTriggerStay2D;
+                    break;
+                }
+
+                case "Heavy Flyer" when self.name.StartsWith("Mantis Heavy Flyer"): {
+                    self.gameObject.GetComponent<HealthManager>().hp = 40;
+                    break;
+                }
             }
 
             orig(self);
