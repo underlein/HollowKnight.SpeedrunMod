@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GlobalEnums;
 using HutongGames.PlayMaker;
@@ -46,7 +47,12 @@ namespace SpeedrunMod.Modules {
             nameof(PlayerData.infectedKnightEncountered),
             nameof(PlayerData.mageLordEncountered),
             nameof(PlayerData.mageLordEncountered_2),
+            nameof(PlayerData.encounteredHornet),
             nameof(PlayerData.enteredGGAtrium)
+        };
+
+        private static readonly Dictionary<string, int> PD_INTS = new Dictionary<string, int> {
+            {nameof(PlayerData.hornetGreenpath), 4}
         };
 
         public override void Initialize() {
@@ -76,6 +82,10 @@ namespace SpeedrunMod.Modules {
         private static void OnNewGame() {
             foreach (string @bool in PD_BOOLS) {
                 PlayerData.instance.SetBool(@bool, true);
+            }
+
+            foreach ((string pdInt, int pdValue) in PD_INTS) {
+                PlayerData.instance.SetInt(pdInt, pdValue);
             }
         }
 
