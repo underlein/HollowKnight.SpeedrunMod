@@ -95,5 +95,6 @@
         <Exec Command="@echo on" />
         <Exec Command="echo Copying mod" />
         <Exec Command="copy &quot;$(TargetPath)&quot; &quot;E:\Steam\steamapps\common\Hollow Knight 1432 debug\hollow_knight_Data\Managed\Mods\&quot;" />
+        <Exec Command="copy &quot;$(TargetPath)&quot; &quot;D:\Rider\SpeedrunMod\SpeedrunMod\SpeedrunMod\Build\&quot;" />
     </Target>
 </Project>
