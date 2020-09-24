@@ -154,6 +154,15 @@ namespace SpeedrunMod.Modules {
                     self.GetState("Queuing").RemoveAllOfType<BoolTest>();
                     break;
                 }
+
+                case "Stun Control" when self.name == "Hornet Boss 1" || self.name == "Hornet Boss 2": {
+                    // set both "Combo Counter" and "Hits Total" to 1 hit instead of 0
+                    foreach (SetIntValue setIntValue in self.GetState("Stun").Actions.OfType<SetIntValue>()) {
+                        setIntValue.intValue.Value = 1;
+                    }
+
+                    break;
+                }
             }
 
             orig(self);
