@@ -39,6 +39,7 @@ namespace SpeedrunMod.Modules {
             On.FadeSequence.Begin += FadeBegin;
             On.AnimatorSequence.Begin += AnimatorBegin;
             On.InputHandler.SetSkipMode += OnSetSkip;
+            On.GameManager.BeginSceneTransitionRoutine += BeginSceneTransition;
             On.HutongGames.PlayMaker.Actions.EaseColor.OnEnter += FastEaseColor;
             On.GameManager.FadeSceneInWithDelay += NoFade;
             ModHooks.Instance.NewGameHook += OnNewGame;
@@ -51,6 +52,7 @@ namespace SpeedrunMod.Modules {
             On.FadeSequence.Begin -= FadeBegin;
             On.AnimatorSequence.Begin -= AnimatorBegin;
             On.InputHandler.SetSkipMode -= OnSetSkip;
+            On.GameManager.BeginSceneTransitionRoutine -= BeginSceneTransition;
             On.HutongGames.PlayMaker.Actions.EaseColor.OnEnter -= FastEaseColor;
             On.GameManager.FadeSceneInWithDelay -= NoFade;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= SceneChanged;
@@ -355,5 +357,9 @@ namespace SpeedrunMod.Modules {
 
         private static void CinematicBegin(On.CinematicSequence.orig_Begin orig, CinematicSequence self) => self.Skip();
 
+        private static IEnumerator BeginSceneTransition(On.GameManager.orig_BeginSceneTransitionRoutine orig, GameManager self, GameManager.SceneLoadInfo info) {
+            info.EntryDelay = 0f;
+            return orig(self, info);
+        }
     }
 }
