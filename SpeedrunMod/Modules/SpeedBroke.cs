@@ -169,8 +169,41 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
 
+                // 1221 hp
                 case "Heavy Flyer" when self.name.StartsWith("Mantis Heavy Flyer"): {
                     self.gameObject.GetComponent<HealthManager>().hp = 40;
+                    break;
+                }
+
+                case "IK Control" when self.name == "Infected Knight": {
+                    // 1221 early spell hits
+                    FsmState start = self.GetState("Roar Start");
+                    FsmState end = self.GetState("Roar End");
+
+                    start.AddAction(end.GetAction<SetInvincible>());
+                    start.AddAction(end.GetAction<SetCollider>());
+                    start.AddAction(end.GetAction<SetIsKinematic2d>());
+
+                    end.RemoveAction<SetInvincible>();
+                    end.RemoveAction<SetCollider>();
+                    end.RemoveAction<SetIsKinematic2d>();
+
+                    // use the godhome wait for normal world fight as well to allow for left side fight start
+                    self.GetState("Waiting").ChangeTransition("BATTLE START", "GG Wait");
+
+                    break;
+                }
+
+                // 1221 broken vessel staggers
+                case "Stun Control" when self.name == "Infected Knight": {
+                    // 1221 combo value
+                    self.GetOrCreateInt("Stun Combo").Value = 7;
+
+                    // set both "Combo Counter" and "Hits Total" to 1 hit instead of 0
+                    foreach (SetIntValue setIntValue in self.GetState("Stun").Actions.OfType<SetIntValue>()) {
+                        setIntValue.intValue.Value = 1;
+                    }
+
                     break;
                 }
             }
