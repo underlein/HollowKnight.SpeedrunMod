@@ -65,6 +65,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Components\Lever.cs" />
+        <Compile Include="Components\ShadeSoulTrigger.cs" />
         <Compile Include="Modules\Dev.cs" />
         <Compile Include="Modules\FasterLoads.cs" />
         <Compile Include="Modules\FastMenus.cs" />

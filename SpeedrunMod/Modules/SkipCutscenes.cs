@@ -7,6 +7,7 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using JetBrains.Annotations;
 using Modding;
+using SpeedrunMod.Components;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vasi;
@@ -195,6 +196,16 @@ namespace SpeedrunMod.Modules {
                     self.GetState("Set Lurien").ChangeTransition("FINISHED", "Return");
                     self.GetState("Set Monomon").ChangeTransition("FINISHED", "Return");
                     break;
+
+                // spawn soul master on the right for all skills fight
+                case "Mage Lord" when self.name == "Mage Lord":
+                    FsmState setEntryPoint = self.GetState("Set Entry Point");
+
+                    // remove knight position check and left spawn point
+                    for (int i = 0; i < 4; i++) {
+                        setEntryPoint.RemoveAction(2);
+                    }
+                    break;
             }
 
             orig(self);
@@ -214,6 +225,7 @@ namespace SpeedrunMod.Modules {
             hc.StartCoroutine(KingsBrandAvalanche(to));
             hc.StartCoroutine(BlackEgg(to));
             hc.StartCoroutine(DreamerReturn(to));
+            hc.StartCoroutine(AllSkillsSoulVials(to));
         }
 
         private static IEnumerator StagCutscene() {
@@ -346,6 +358,18 @@ namespace SpeedrunMod.Modules {
             // cancel healing animation
             GameObject.Find("Knight").LocateMyFSM("Spell Control").SendEvent("FSM CANCEL");
         }
+        
+        // breaks all 3 soul vials if the first one gets hit with shade soul
+        private static IEnumerator AllSkillsSoulVials(Scene to) {
+            if (to.name != "Ruins1_24") yield break;
+
+            yield return null;
+            
+            GameObject.Find("Ruins Vial Empty").AddComponent<ShadeSoulTrigger>().OnShadeSoulHit = () => {
+                GameObject.Find("Ruins Vial Empty (1)").GetComponent<Breakable>().BreakSelf();
+                GameObject.Find("Ruins Soul Vial").GetComponent<Breakable>().BreakSelf();
+            };
+        }
 
         private static void OnSetSkip(On.InputHandler.orig_SetSkipMode orig, InputHandler self, SkipPromptMode newmode) {
             orig(self, SkipPromptMode.SKIP_INSTANT);
@@ -359,7 +383,8 @@ namespace SpeedrunMod.Modules {
 
         private static IEnumerator BeginSceneTransition(On.GameManager.orig_BeginSceneTransitionRoutine orig, GameManager self, GameManager.SceneLoadInfo info) {
             info.EntryDelay = 0f;
-            return orig(self, info);
+            yield return orig(self, info);
         }
+
     }
 }
