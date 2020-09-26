@@ -205,6 +205,7 @@ namespace SpeedrunMod.Modules {
                     for (int i = 0; i < 4; i++) {
                         setEntryPoint.RemoveAction(2);
                     }
+
                     break;
             }
 
@@ -225,7 +226,6 @@ namespace SpeedrunMod.Modules {
             hc.StartCoroutine(KingsBrandAvalanche(to));
             hc.StartCoroutine(BlackEgg(to));
             hc.StartCoroutine(DreamerReturn(to));
-            hc.StartCoroutine(AllSkillsSoulVials(to));
         }
 
         private static IEnumerator StagCutscene() {
@@ -357,18 +357,6 @@ namespace SpeedrunMod.Modules {
 
             // cancel healing animation
             GameObject.Find("Knight").LocateMyFSM("Spell Control").SendEvent("FSM CANCEL");
-        }
-        
-        // breaks all 3 soul vials if the first one gets hit with shade soul
-        private static IEnumerator AllSkillsSoulVials(Scene to) {
-            if (to.name != "Ruins1_24") yield break;
-
-            yield return null;
-            
-            GameObject.Find("Ruins Vial Empty").AddComponent<ShadeSoulTrigger>().OnShadeSoulHit = () => {
-                GameObject.Find("Ruins Vial Empty (1)").GetComponent<Breakable>().BreakSelf();
-                GameObject.Find("Ruins Soul Vial").GetComponent<Breakable>().BreakSelf();
-            };
         }
 
         private static void OnSetSkip(On.InputHandler.orig_SetSkipMode orig, InputHandler self, SkipPromptMode newmode) {

@@ -211,6 +211,10 @@ namespace SpeedrunMod.Modules {
                     HeroController.instance.StartCoroutine(QgThornRespawn());
                     break;
                 }
+                case "Ruins1_24": {
+                    HeroController.instance.StartCoroutine(AllSkillsSoulVials());
+                    break;
+                }
             }
         }
 
@@ -280,6 +284,16 @@ namespace SpeedrunMod.Modules {
 
             box.size = new Vector2(1, 13.7f); // default: (1.0, 9.7)
             box.offset = new Vector2(0, 2.4f); // default: (0.0, 0.4)
+        }
+
+        // breaks all 3 soul vials if the first one gets hit with shade soul
+        private static IEnumerator AllSkillsSoulVials() {
+            yield return null;
+
+            GameObject.Find("Ruins Vial Empty").AddComponent<ShadeSoulTrigger>().OnShadeSoulHit = () => {
+                GameObject.Find("Ruins Vial Empty (1)").GetComponent<Breakable>().BreakSelf();
+                GameObject.Find("Ruins Soul Vial").GetComponent<Breakable>().BreakSelf();
+            };
         }
 
     }
