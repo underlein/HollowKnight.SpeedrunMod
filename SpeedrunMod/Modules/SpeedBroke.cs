@@ -254,6 +254,13 @@ namespace SpeedrunMod.Modules {
                     HeroController.instance.StartCoroutine(AllSkillsSoulVials());
                     break;
                 }
+                // todo find all scenes with stag signs
+                case "Ruins2_04":
+                case "Ruins2_06":
+                case "Ruins2_08": {
+                    HeroController.instance.StartCoroutine(StagSignPogos());
+                    break;
+                }
             }
         }
 
@@ -333,6 +340,17 @@ namespace SpeedrunMod.Modules {
                 GameObject.Find("Ruins Vial Empty (1)").GetComponent<Breakable>().BreakSelf();
                 GameObject.Find("Ruins Soul Vial").GetComponent<Breakable>().BreakSelf();
             };
+        }
+
+        private static IEnumerator StagSignPogos() {
+            yield return null;
+
+            foreach (NonBouncer nonBounce in UObject.FindObjectsOfType<NonBouncer>()) {
+                if (!nonBounce.gameObject.name.StartsWith("Stag_Pole_") || !nonBounce.gameObject.name.Contains("_Break"))
+                    continue;
+
+                nonBounce.active = false;
+            }
         }
 
     }
