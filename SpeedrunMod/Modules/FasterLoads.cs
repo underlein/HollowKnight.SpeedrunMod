@@ -49,9 +49,11 @@ namespace SpeedrunMod.Modules {
         }
 
         private static IEnumerator DelayForNailCharge(On.HeroController.orig_EnterScene orig, HeroController self, TransitionPoint enterGate, float delayBeforeEnter) {
-            if (self.GetCState("nailCharging") || self.GetCState("attacking")) {
-                // 0.565 seconds are vanilla, adding a bit more to make cyclone dropping into Deepnest_01b viable on good pcs
-                delayBeforeEnter += 0.7f;
+            if (self.playerData.hasNailArt) {
+                if (self.GetCState("nailCharging") || self.GetCState("attacking")) {
+                    // 0.565 seconds are vanilla, adding a bit more to make cyclone dropping into Deepnest_01b viable on good pcs
+                    delayBeforeEnter += 0.7f;
+                }
             }
 
             yield return orig(self, enterGate, delayBeforeEnter);
