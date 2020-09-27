@@ -206,6 +206,12 @@ namespace SpeedrunMod.Modules {
 
                     break;
                 }
+
+                // chain dives
+                case "Spell Control" when self.name == "Knight": {
+                    self.GetState("Quake Antic").RemoveAction(1);
+                    break;
+                }
             }
 
             orig(self);
