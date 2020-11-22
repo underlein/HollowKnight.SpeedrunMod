@@ -207,6 +207,26 @@ namespace SpeedrunMod.Modules {
                     }
 
                     break;
+                
+                // early broken vessel fight start
+                case "IK Control" when self.name == "Infected Knight": {
+                    // 1221 early spell hits
+                    FsmState start = self.GetState("Roar Start");
+                    FsmState end = self.GetState("Roar End");
+
+                    start.AddAction(end.GetAction<SetInvincible>());
+                    start.AddAction(end.GetAction<SetCollider>());
+                    start.AddAction(end.GetAction<SetIsKinematic2d>());
+
+                    end.RemoveAction<SetInvincible>();
+                    end.RemoveAction<SetCollider>();
+                    end.RemoveAction<SetIsKinematic2d>();
+
+                    // use the godhome wait for normal world fight as well to allow for left side fight start
+                    self.GetState("Waiting").ChangeTransition("BATTLE START", "GG Wait");
+
+                    break;
+                }
             }
 
             orig(self);

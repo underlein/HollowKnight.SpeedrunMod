@@ -47,7 +47,7 @@ namespace SpeedrunMod.Modules {
                 "Fly 6" => 98,
                 "Fly 7" => 334,
                 "Fly 10" => 0,
-                _ => 270
+                _ => 0
             };
         }
 
