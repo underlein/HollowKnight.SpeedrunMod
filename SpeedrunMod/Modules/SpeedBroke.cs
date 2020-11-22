@@ -175,6 +175,7 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
 
+                // early broken vessel fight start
                 case "IK Control" when self.name == "Infected Knight": {
                     // 1221 early spell hits
                     FsmState start = self.GetState("Roar Start");
@@ -238,12 +239,10 @@ namespace SpeedrunMod.Modules {
             switch (to.name) {
                 case "Ruins1_31" when ShadeSoulLeverSkip: {
                     HeroController.instance.StartCoroutine(EnableShadeSoulLeverSkip());
-
                     break;
                 }
                 case "Mines_35" when CrystalisedMoundSpikes: {
                     HeroController.instance.StartCoroutine(AddCrystalisedMoundSpikes());
-
                     break;
                 }
                 case "Fungus3_05": {
@@ -254,13 +253,6 @@ namespace SpeedrunMod.Modules {
                     HeroController.instance.StartCoroutine(AllSkillsSoulVials());
                     break;
                 }
-                // todo find all scenes with stag signs
-                // case "Ruins2_04":
-                // case "Ruins2_06":
-                // case "Ruins2_08": {
-                //     HeroController.instance.StartCoroutine(StagSignPogos());
-                //     break;
-                // }
                 case "Crossroads_11_alt": {
                     HeroController.instance.StartCoroutine(GreenpathBaldurInstaKill());
                     break;
@@ -412,17 +404,6 @@ namespace SpeedrunMod.Modules {
                 GameObject.Find("Ruins Soul Vial").GetComponent<Breakable>().BreakSelf();
             };
         }
-
-        // private static IEnumerator StagSignPogos() {
-        //     yield return null;
-        //
-        //     foreach (NonBouncer nonBounce in UObject.FindObjectsOfType<NonBouncer>()) {
-        //         if (!nonBounce.gameObject.name.StartsWith("Stag_Pole_") || !nonBounce.gameObject.name.Contains("_Break"))
-        //             continue;
-        //
-        //         nonBounce.active = false;
-        //     }
-        // }
 
         private static IEnumerator BreakableObjectPogos() {
             yield return null;
