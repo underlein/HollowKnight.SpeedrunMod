@@ -255,12 +255,20 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
                 // todo find all scenes with stag signs
-                case "Ruins2_04":
-                case "Ruins2_06":
-                case "Ruins2_08": {
-                    HeroController.instance.StartCoroutine(StagSignPogos());
+                // case "Ruins2_04":
+                // case "Ruins2_06":
+                // case "Ruins2_08": {
+                //     HeroController.instance.StartCoroutine(StagSignPogos());
+                //     break;
+                // }
+                case "Crossroads_11_alt": {
+                    HeroController.instance.StartCoroutine(GreenpathBaldurInstaKill());
                     break;
                 }
+            }
+
+            if (GameManager.instance.IsGameplayScene()) {
+                HeroController.instance.StartCoroutine(BreakableObjectPogos());
             }
         }
 
@@ -305,6 +313,69 @@ namespace SpeedrunMod.Modules {
             col.points = pts.ToArray();
         }
 
+        private static IEnumerator GreenpathBaldurInstaKill() {
+            yield return null;
+
+            GameObject baldurTrigger = new GameObject
+            (
+                "Baldur Instakill Trigger",
+                typeof(VengefulSpiritTrigger),
+                typeof(BoxCollider2D)
+            );
+
+            baldurTrigger.transform.position = new Vector3(78, 12.3f);
+            baldurTrigger.layer = (int) PhysLayers.TERRAIN;
+
+            BoxCollider2D baldurTriggerCollider = baldurTrigger.GetComponent<BoxCollider2D>();
+            baldurTriggerCollider.size = new Vector2(2, 3.2f);
+            baldurTriggerCollider.offset = new Vector2(0, -0.6f);
+            baldurTriggerCollider.isTrigger = true;
+
+            baldurTrigger.GetComponent<VengefulSpiritTrigger>().OnVengefulSpiritHit = (fireball) => {
+                if (GameObject.Find("Blocker") == null) {
+                    return;
+                }
+
+                GameObject baldur = GameObject.Find("Blocker");
+
+                // check if baldur is open
+                string baldurState = baldur.LocateMyFSM("Blocker Control").ActiveStateName;
+                if (!baldurState.Equals("Idle")
+                    && !baldurState.Equals("Attack Choose")
+                    && !baldurState.Equals("Goop")
+                    && !baldurState.Equals("Can Roller?")
+                    && !baldurState.Equals("Roller")
+                    && !baldurState.Equals("Shot Antic")
+                    && !baldurState.Equals("Fire")
+                    && !baldurState.Equals("Roller Assign")
+                    && !baldurState.Equals("Shot Anim End")) {
+                    return;
+                }
+
+                // check if hero is far enough away
+                if (HeroController.instance.transform.position.x < 98.2f) {
+                    return;
+                }
+
+                // hit baldur
+                baldur.GetComponent<HealthManager>().Hit(
+                    new HitInstance {
+                        Source = fireball,
+                        AttackType = AttackTypes.Spell,
+                        CircleDirection = false,
+                        DamageDealt = 60,
+                        Direction = 180,
+                        IgnoreInvulnerable = false,
+                        MagnitudeMultiplier = 1.5f,
+                        MoveAngle = 0,
+                        MoveDirection = false,
+                        Multiplier = 1,
+                        SpecialType = SpecialTypes.None,
+                        IsExtraDamage = false
+                    });
+            };
+        }
+
         private static IEnumerator AddCrystalisedMoundSpikes() {
             yield return null;
 
@@ -342,14 +413,24 @@ namespace SpeedrunMod.Modules {
             };
         }
 
-        private static IEnumerator StagSignPogos() {
+        // private static IEnumerator StagSignPogos() {
+        //     yield return null;
+        //
+        //     foreach (NonBouncer nonBounce in UObject.FindObjectsOfType<NonBouncer>()) {
+        //         if (!nonBounce.gameObject.name.StartsWith("Stag_Pole_") || !nonBounce.gameObject.name.Contains("_Break"))
+        //             continue;
+        //
+        //         nonBounce.active = false;
+        //     }
+        // }
+
+        private static IEnumerator BreakableObjectPogos() {
             yield return null;
 
             foreach (NonBouncer nonBounce in UObject.FindObjectsOfType<NonBouncer>()) {
-                if (!nonBounce.gameObject.name.StartsWith("Stag_Pole_") || !nonBounce.gameObject.name.Contains("_Break"))
-                    continue;
-
-                nonBounce.active = false;
+                if (nonBounce.gameObject.GetComponent<Breakable>() != null) {
+                    nonBounce.active = false;
+                }
             }
         }
 

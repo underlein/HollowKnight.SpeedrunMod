@@ -66,6 +66,7 @@
     <ItemGroup>
         <Compile Include="Components\Lever.cs" />
         <Compile Include="Components\ShadeSoulTrigger.cs" />
+        <Compile Include="Components\VengefulSpiritTrigger.cs" />
         <Compile Include="Modules\Dev.cs" />
         <Compile Include="Modules\FasterLoads.cs" />
         <Compile Include="Modules\FastMenus.cs" />
@@ -73,6 +74,7 @@
         <Compile Include="Modules\FauxMod.cs" />
         <Compile Include="Modules\FixDashmaster.cs" />
         <Compile Include="Modules\FixFireballs.cs" />
+        <Compile Include="Modules\FixRng.cs" />
         <Compile Include="Modules\FixVolume.cs" />
         <Compile Include="Modules\InfinitePoP.cs" />
         <Compile Include="Modules\LemmSellAll.cs" />
@@ -96,6 +98,6 @@
         <Exec Command="@echo on" />
         <Exec Command="echo Copying mod" />
         <Exec Command="copy &quot;$(TargetPath)&quot; &quot;E:\Steam\steamapps\common\Hollow Knight 1432 debug\hollow_knight_Data\Managed\Mods\&quot;" />
-        <Exec Command="copy &quot;$(TargetPath)&quot; &quot;D:\Rider\SpeedrunMod\SpeedrunMod\SpeedrunMod\Build\&quot;" />
+        <Exec Command="copy &quot;$(TargetPath)&quot; &quot;F:\Rider\SpeedrunMod\SpeedrunMod\SpeedrunMod\Build\&quot;" />
     </Target>
 </Project>
