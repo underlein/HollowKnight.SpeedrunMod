@@ -231,10 +231,10 @@ namespace SpeedrunMod.Modules {
                         finishEvent = FsmEvent.FindEvent("STARTATTACK"),
                         realTime = false
                     });
-                    
+
                     // don't cancel throw
                     self.GetState("Attack Antic").RemoveAction<BoolTest>();
-                    
+
                     // fix transitions
                     self.GetState("Startled?").ChangeTransition("FINISHED", "CheckFirstTrigger");
                     checkFirstTrigger.AddTransition(FsmEvent.Finished, "FirstShift");
@@ -279,6 +279,10 @@ namespace SpeedrunMod.Modules {
                 }
                 case "Fungus3_05": {
                     HeroController.instance.StartCoroutine(QgThornRespawn());
+                    break;
+                }
+                case "Fungus3_08": {
+                    HeroController.instance.StartCoroutine(QgCdashFix());
                     break;
                 }
                 case "Ruins1_24": {
@@ -425,6 +429,23 @@ namespace SpeedrunMod.Modules {
 
             box.size = new Vector2(1, 13.7f); // default: (1.0, 9.7)
             box.offset = new Vector2(0, 2.4f); // default: (0.0, 0.4)
+        }
+
+        // makes the qg cdash possible again
+        private static IEnumerator QgCdashFix() {
+            yield return null;
+
+            // fix roof collider points
+            PolygonCollider2D col = GameObject.Find("Roof Collider").GetComponent<PolygonCollider2D>();
+
+            List<Vector2> pts = col.points.ToList();
+            pts[116] = new Vector2(117.2f, 2.2f);
+            pts[120] = new Vector2(120.0f, 2.2f);
+            col.points = pts.ToArray();
+
+            // move mossfly down
+            GameObject mossfly = GameObject.Find("Moss Flyer (1)");
+            mossfly.transform.position = new Vector3(124.7f, 10);
         }
 
         // breaks all 3 soul vials if the first one gets hit with shade soul
