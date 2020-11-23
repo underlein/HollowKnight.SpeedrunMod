@@ -32,9 +32,7 @@ namespace SpeedrunMod.Modules {
 
         [SerializeToSetting] public static bool LeverSkips = true;
 
-        [SerializeToSetting] public static bool NoHardFalls;
-
-        [SerializeToSetting] public static bool ShadeSoulLeverSkip;
+        [SerializeToSetting] public static bool ShadeSoulLeverSkip = true;
 
         [SerializeToSetting] public static bool CrystalisedMoundSpikes = true;
 
@@ -42,7 +40,6 @@ namespace SpeedrunMod.Modules {
             On.HeroController.CanOpenInventory += CanOpenInventory;
             On.HeroController.CanQuickMap += CanQuickMap;
             On.TutorialEntryPauser.Start += AllowPause;
-            On.HeroController.ShouldHardLand += CanHardLand;
             On.PlayMakerFSM.OnEnable += ModifyFsm;
             On.InputHandler.Update += EnableSuperslides;
             On.SpellFluke.DoDamage += FlukenestDamage;
@@ -55,7 +52,6 @@ namespace SpeedrunMod.Modules {
             On.HeroController.CanOpenInventory -= CanOpenInventory;
             On.HeroController.CanQuickMap -= CanQuickMap;
             On.TutorialEntryPauser.Start -= AllowPause;
-            On.HeroController.ShouldHardLand -= CanHardLand;
             On.PlayMakerFSM.OnEnable -= ModifyFsm;
             On.InputHandler.Update -= EnableSuperslides;
             On.SpellFluke.DoDamage -= FlukenestDamage;
@@ -120,17 +116,8 @@ namespace SpeedrunMod.Modules {
             }
         }
 
-        private static bool CanHardLand(On.HeroController.orig_ShouldHardLand orig, HeroController self, Collision2D collision) {
-            return !NoHardFalls && orig(self, collision);
-        }
-
         private static void ModifyFsm(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self) {
             switch (self.FsmName) {
-                case "Control" when self.name == "Initial Fall Impact" && NoHardFalls: {
-                    self.ChangeTransition("Idle", "LAND", "Return Control");
-                    break;
-                }
-
                 case "Call Lever" when self.name.StartsWith("Lift Call Lever") && Televator: {
                     // Don't change big elevators.
                     if (self.GetState("Check Already Called") == null) break;
@@ -140,7 +127,7 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
 
-                case "Bottle Control" when self.GetState("Shatter") is FsmState shatter && GrubsThroughWalls: {
+                case "Bottle Control" when self.GetState("Shatter") is {} shatter && GrubsThroughWalls: {
                     shatter.RemoveAllOfType<BoolTest>();
                     break;
                 }
