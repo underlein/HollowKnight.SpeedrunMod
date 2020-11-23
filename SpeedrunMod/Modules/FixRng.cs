@@ -29,6 +29,12 @@ namespace SpeedrunMod.Modules {
                     HeroController.instance.StartCoroutine(FixGruzDrop(self));
                     break;
                 }
+                // remove shade spells
+                case "Shade Control" when self.name.StartsWith("Hollow Shade"): {
+                    self.GetState("Init").RemoveAction(6);
+                    self.FsmVariables.FindFsmInt("SP").Value = 0;
+                    break;
+                }
             }
 
             orig(self);
