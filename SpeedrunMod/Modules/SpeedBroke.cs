@@ -193,6 +193,58 @@ namespace SpeedrunMod.Modules {
                     self.GetState("Quake Antic").RemoveAction(1);
                     break;
                 }
+
+                // pogaxe miner
+                // makes pogaxe miner go backwards and stall for a bit the first time it gets triggered after loading the room
+                // after the first trigger it has the normal behaviour
+                case "Zombie Miner" when self.name == "Zombie Miner 1 (3)": {
+                    FsmBool firstTrigger = new FsmBool("FirstTrigger") {Value = true};
+                    self.FsmVariables.BoolVariables = self.FsmVariables.BoolVariables.Append(firstTrigger).ToArray();
+
+                    // check bool if first trigger
+                    FsmState checkFirstTrigger = self.CreateState("CheckFirstTrigger");
+                    checkFirstTrigger.AddAction(new BoolTest {
+                        boolVariable = firstTrigger,
+                        isTrue = null,
+                        isFalse = FsmEvent.AddFsmEvent(new FsmEvent("NOTFIRSTTRIGGER")),
+                        everyFrame = false
+                    });
+
+                    // first shift always to left
+                    FsmState firstShift = self.CopyState("Start Shift", "FirstShift");
+                    firstShift.RemoveAction<RandomBool>();
+                    firstShift.GetAction<SetWalkerFacing>().walkRight = false;
+                    firstShift.GetAction<SetWalkerFacing>().randomStartDir = false;
+                    // set first trigger false
+                    firstShift.AddAction(new SetBoolValue {
+                        boolVariable = firstTrigger,
+                        boolValue = false,
+                        everyFrame = false
+                    });
+
+                    // consistent wait time on first move
+                    FsmEvent.AddFsmEvent(new FsmEvent("STARTATTACK"));
+                    FsmState firstMove = self.CopyState("Movestart", "FirstMove");
+                    firstMove.RemoveAction<WaitRandom>();
+                    firstMove.AddAction(new Wait {
+                        time = 0.5f,
+                        finishEvent = FsmEvent.FindEvent("STARTATTACK"),
+                        realTime = false
+                    });
+                    
+                    // don't cancel throw
+                    self.GetState("Attack Antic").RemoveAction<BoolTest>();
+                    
+                    // fix transitions
+                    self.GetState("Startled?").ChangeTransition("FINISHED", "CheckFirstTrigger");
+                    checkFirstTrigger.AddTransition(FsmEvent.Finished, "FirstShift");
+                    checkFirstTrigger.AddTransition(FsmEvent.FindEvent("NOTFIRSTTRIGGER"), "Shift?");
+                    firstShift.ChangeTransition("FINISHED", "FirstMove");
+                    firstMove.Transitions = new FsmTransition[0]; // can't remove this any other way idk why
+                    firstMove.AddTransition(FsmEvent.FindEvent("STARTATTACK"), "End Shift");
+
+                    break;
+                }
             }
 
             orig(self);
