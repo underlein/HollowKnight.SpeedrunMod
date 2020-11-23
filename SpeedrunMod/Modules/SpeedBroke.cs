@@ -45,6 +45,8 @@ namespace SpeedrunMod.Modules {
             On.HeroController.ShouldHardLand += CanHardLand;
             On.PlayMakerFSM.OnEnable += ModifyFsm;
             On.InputHandler.Update += EnableSuperslides;
+            On.SpellFluke.DoDamage += FlukenestDamage;
+            ModHooks.Instance.GetPlayerIntHook += FlukenestNotches;
             ModHooks.Instance.ObjectPoolSpawnHook += OnObjectPoolSpawn;
             USceneManager.activeSceneChanged += SceneChanged;
         }
@@ -56,6 +58,8 @@ namespace SpeedrunMod.Modules {
             On.HeroController.ShouldHardLand -= CanHardLand;
             On.PlayMakerFSM.OnEnable -= ModifyFsm;
             On.InputHandler.Update -= EnableSuperslides;
+            On.SpellFluke.DoDamage -= FlukenestDamage;
+            ModHooks.Instance.GetPlayerIntHook -= FlukenestNotches;
             ModHooks.Instance.ObjectPoolSpawnHook -= OnObjectPoolSpawn;
             USceneManager.activeSceneChanged -= SceneChanged;
         }
@@ -468,5 +472,15 @@ namespace SpeedrunMod.Modules {
             }
         }
 
+        private static void FlukenestDamage(On.SpellFluke.orig_DoDamage orig, SpellFluke self, GameObject obj, int upwardrecursionamount, bool burst) {
+            int damage = PlayerData.instance.GetBool("equippedCharm_19") ? 7 : 5;
+            self.GetType().GetField("damage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(self, damage);
+
+            orig(self, obj, upwardrecursionamount, burst);
+        }
+
+        private static int FlukenestNotches(string intname) {
+            return intname == "charmCost_11" ? 2 : PlayerData.instance.GetIntInternal(intname);
+        }
     }
 }
