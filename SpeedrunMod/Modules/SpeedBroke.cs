@@ -249,6 +249,12 @@ namespace SpeedrunMod.Modules {
 
                     break;
                 }
+
+                // gruz mother gruzzer geo
+                case "Bouncer Control" when self.name.StartsWith("Fly") && GameManager.instance.sceneName == "Crossroads_04": {
+                    self.gameObject.GetComponent<HealthManager>().SetGeoSmall(2);
+                    break;
+                }
             }
 
             orig(self);
@@ -482,5 +488,6 @@ namespace SpeedrunMod.Modules {
         private static int FlukenestNotches(string intname) {
             return intname == "charmCost_11" ? 2 : PlayerData.instance.GetIntInternal(intname);
         }
+
     }
 }
