@@ -459,9 +459,14 @@ namespace SpeedrunMod.Modules {
             yield return null;
 
             foreach (NonBouncer nonBounce in UObject.FindObjectsOfType<NonBouncer>()) {
-                if (nonBounce.gameObject.GetComponent<Breakable>() != null) {
-                    nonBounce.active = false;
+                if (nonBounce.gameObject.GetComponent<Breakable>() == null) {
+                    continue;
                 }
+                if (GameManager.instance.sceneName == "Crossroads_ShamanTemple" && nonBounce.gameObject.name.StartsWith("Plank Solid Terrain")) {
+                    continue;
+                }
+                
+                nonBounce.active = false;
             }
         }
 
