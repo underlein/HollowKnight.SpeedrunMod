@@ -46,6 +46,7 @@ namespace SpeedrunMod.Modules {
             ModHooks.Instance.GetPlayerIntHook += FlukenestNotches;
             ModHooks.Instance.ObjectPoolSpawnHook += OnObjectPoolSpawn;
             USceneManager.activeSceneChanged += SceneChanged;
+            On.DeactivateIfPlayerdataFalse.OnEnable += NkgWithoutGrimmchild;
         }
 
         public override void Unload() {
@@ -58,6 +59,7 @@ namespace SpeedrunMod.Modules {
             ModHooks.Instance.GetPlayerIntHook -= FlukenestNotches;
             ModHooks.Instance.ObjectPoolSpawnHook -= OnObjectPoolSpawn;
             USceneManager.activeSceneChanged -= SceneChanged;
+            On.DeactivateIfPlayerdataFalse.OnEnable -= NkgWithoutGrimmchild;
         }
 
         private static void AllowPause(On.TutorialEntryPauser.orig_Start orig, TutorialEntryPauser self) {
@@ -290,6 +292,10 @@ namespace SpeedrunMod.Modules {
                     HeroController.instance.StartCoroutine(GreenpathBaldurInstaKill());
                     break;
                 }
+                case "Grimm_Main_Tent": {
+                    HeroController.instance.StartCoroutine(RemoveNkgShield());
+                    break;
+                }
             }
 
             if (GameManager.instance.IsGameplayScene()) {
@@ -357,11 +363,10 @@ namespace SpeedrunMod.Modules {
             baldurTriggerCollider.isTrigger = true;
 
             baldurTrigger.GetComponent<VengefulSpiritTrigger>().OnVengefulSpiritHit = (fireball) => {
-                if (GameObject.Find("Blocker") == null) {
+                GameObject baldur = GameObject.Find("Blocker");
+                if (baldur == null) {
                     return;
                 }
-
-                GameObject baldur = GameObject.Find("Blocker");
 
                 // check if baldur is open
                 string baldurState = baldur.LocateMyFSM("Blocker Control").ActiveStateName;
@@ -462,11 +467,30 @@ namespace SpeedrunMod.Modules {
                 if (nonBounce.gameObject.GetComponent<Breakable>() == null) {
                     continue;
                 }
+
                 if (GameManager.instance.sceneName == "Crossroads_ShamanTemple" && nonBounce.gameObject.name.StartsWith("Plank Solid Terrain")) {
                     continue;
                 }
-                
+
                 nonBounce.active = false;
+            }
+        }
+
+        private static void NkgWithoutGrimmchild(On.DeactivateIfPlayerdataFalse.orig_OnEnable orig, DeactivateIfPlayerdataFalse self) {
+            if (self.gameObject.name == "Dream Enter Grimm"
+                && (GameManager.instance.sceneName == "Town" || GameManager.instance.sceneName == "Grimm_Main_Tent" || GameManager.instance.sceneName == "Grimm_Nightmare")) {
+                return;
+            }
+
+            orig(self);
+        }
+
+        private static IEnumerator RemoveNkgShield() {
+            yield return null;
+
+            GameObject shield = GameObject.Find("Grimm_sleep_shield");
+            if (shield != null) {
+                UObject.Destroy(shield);
             }
         }
 
