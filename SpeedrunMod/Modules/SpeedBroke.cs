@@ -354,7 +354,7 @@ namespace SpeedrunMod.Modules {
                 typeof(BoxCollider2D)
             );
 
-            baldurTrigger.transform.position = new Vector3(78, 12.3f);
+            baldurTrigger.transform.position = new Vector3(79, 12.3f);
             baldurTrigger.layer = (int) PhysLayers.TERRAIN;
 
             BoxCollider2D baldurTriggerCollider = baldurTrigger.GetComponent<BoxCollider2D>();
