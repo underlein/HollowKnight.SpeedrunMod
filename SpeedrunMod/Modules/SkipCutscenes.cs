@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GlobalEnums;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using JetBrains.Annotations;
 using Modding;
-using SpeedrunMod.Components;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vasi;
@@ -15,6 +15,7 @@ using UObject = UnityEngine.Object;
 
 namespace SpeedrunMod.Modules {
     [UsedImplicitly]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class SkipCutscenes : FauxMod {
 
         private static readonly string[] DREAMERS = {"Deepnest_Spider_Town", "Fungus3_archive_02", "Ruins2_Watcher_Room"};
@@ -207,7 +208,7 @@ namespace SpeedrunMod.Modules {
                     }
 
                     break;
-                
+
                 // early broken vessel fight start
                 case "IK Control" when self.name == "Infected Knight": {
                     // 1221 early spell hits
@@ -224,6 +225,30 @@ namespace SpeedrunMod.Modules {
 
                     // use the godhome wait for normal world fight as well to allow for left side fight start
                     self.GetState("Waiting").ChangeTransition("BATTLE START", "GG Wait");
+
+                    break;
+                }
+
+                case "Toll Machine Bench" when self.name == "Toll Machine Bench": {
+                    // set wait times for each state
+                    self.GetState("Pause Before Box Drop").GetAction<Wait>().time = 0.1f;
+                    self.GetState("Box Down").GetAction<Wait>().time = 0.8f;
+                    self.GetState("Bench Up").GetAction<Wait>().time = 1.3f;
+
+                    // fast toll disappearing
+                    self.gameObject.GetComponent<tk2dSpriteAnimator>().GetClipByName("Box_disappear").fps = 45; // 3x speed, 15 default
+                    self.GetState("Box Down").RemoveAction<AudioPlayerOneShotSingle>();
+
+                    // fast bench animation, synced with audio
+                    self.GetState("Bench Up").GetAction<Tk2dPlayAnimationWithEvents>().gameObject.GameObject.Value.GetComponent<tk2dSpriteAnimator>().DefaultClip.fps = 32; // 2x speed, 16 default
+                    ((AudioPlayerOneShotSingle) self.GetState("Bench Up").Actions[6]).delay = 0.45f;
+                    ((AudioPlayerOneShotSingle) self.GetState("Bench Up").Actions[7]).delay = 0.95f;
+
+                    // move rise audio one state earlier to make it sync better
+                    AudioPlayerOneShotSingle rise = (AudioPlayerOneShotSingle) self.GetState("Bench Up").Actions[5];
+                    rise.delay = 0.7f;
+                    self.GetState("Box Down").AddAction(rise);
+                    self.GetState("Bench Up").RemoveAction(5);
 
                     break;
                 }
