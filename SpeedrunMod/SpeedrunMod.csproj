@@ -78,6 +78,7 @@
         <Compile Include="Modules\FixVolume.cs" />
         <Compile Include="Modules\InfinitePoP.cs" />
         <Compile Include="Modules\LemmSellAll.cs" />
+        <Compile Include="Modules\LockMenuCursor.cs" />
         <Compile Include="Modules\MouseBindings.cs" />
         <Compile Include="Modules\SkipCutscenes.cs" />
         <Compile Include="Modules\SpeedBroke.cs" />
