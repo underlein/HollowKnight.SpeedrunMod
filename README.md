@@ -9,6 +9,7 @@ Remove downtime:
 - Fast toll bench animation
 - Removed Dreamer cutscenes
 - Scene transitions significantly sped up
+- Bosses skip scream introductions
 
 Consistent RNG:
 - Always first spit Baldur in Mound
@@ -29,9 +30,18 @@ Restored elements:
 - Enter Nightmare King Grimm fight without Grimmchild equipped
 - 1.2.2.1 Broken Vessel fight
 - 1.2.2.1 Sanctum soul vials
+- Explosion pogo reimplemented
 
 Misc:
 - Background object pogos
-- Delayed Furious Vengeflies on the way to Crystal Peaks toll to account for faster transitions
-- Delays scene transition while charging nail-arts
+- Delayed Furious Vengeflies on way to Crystal Peaks toll, accounting for fast transitions
+- Delay scene transition when charging nail-arts
 - Lock menu cursor for consistent main menu and quitouts
+- Dream Nail buffering
+
+QOL-carryover:
+- Dashmaster down-dash override no longer an issue
+- Instant stags
+- Fast menus
+- Inventory drops
+- Lever skips
