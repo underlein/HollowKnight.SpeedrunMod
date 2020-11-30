@@ -1,0 +1,161 @@
+SpeedrunMod: 
+- Swap old HookEndpointManager usages to ILHook
+- lock menu cursor
+- fast toll bench animation
+- extend gp baldur instakill range
+- consistent kp vengeflies, consistent abyss bridge cdash, make furious vengeflies trigger later
+- nkg without grimmchild
+- https://clips.twitch.tv/SmallGoldenYakPartyTime
+- remove shade spells
+- remove nohardfalls, cleanup
+- gruz mother gruzzer geo
+- 1221 flukenest
+- fix qg cdash
+- pogaxe
+- cleanup
+- (hopefully) consistent gruz drop
+- first spit baldurs, greenpath baldur instakill, make breakable objects pogoable
+- Pogoable stag signs
+- Check nail art delay for nail art (yes)
+- Chain dives
+- 1221 Broken Vessel fight
+- Move all skills soul vials to SpeedBroke
+- Spawn soul master on the right, break all 3 soul master vials for all skills fight
+- Delay scene enter while charging nail art
+- set entry delay to 0 again, was removed before
+- add dreamers again, but still skip cutscenes
+- cleanup
+- Add built dll
+- Remove NoHardSaves, SalubraKiller, SaneUumuu, UnencryptedSaves
+- Fast dream nail cutscene enter, fast gruz mother phase transition
+- Fast Spell and Skill pickup cutscenes
+- fix qg thorn respawn
+- Fix nail arts on one way walls, revert mantis petra hp back to 1221 value
+- 1221 Hornet stagger pattern
+- Skip Hornet 1 & 2 fight start dialogue
+- Remove duplicated directory
+- Merge branch 'master' of https://github.com/underlein/HollowKnight.SpeedrunMod
+- Merge branch 'master' of https://github.com/underlein/HollowKnight.SpeedrunMod
+- Initial commit (copy of fifty-six/HollowKnight.QoL)
+- Initial commit
+
+QOL:
+- Merge pull request #15 from AcridStingray3/master
+- SaneUumuu dreamnail, undo useless friction changes
+- Merge branch 'AcridStingray3-master'
+- Merge branch 'master' of git://github.com/AcridStingray3/HollowKnight.QoL into AcridStingray3-master
+- Merge pull request #14 from underlein/master
+- Merge remote-tracking branch 'origin/master'
+- faster kings brand hornet cutscene, faster black egg opening
+- Merge pull request #13 from underlein/master
+- add crystalised mound spike pogos
+- Merge pull request #12 from underlein/master
+- fast abyss shriek pickup
+- Use public PersistentBoolData property instead of an ID property
+- Fix missing unhook, use nameof for InfinitePoP
+- Refactor: UnencryptedSaves
+- Consistent braces
+- Refactor: shade soul level skip
+- Move modules to sub-folder
+- Style
+- Merge pull request #11 from underlein/underlein
+- add shade soul lever skip
+- SaneUumuu start
+- Make dreamers check for null to accomodate rando
+- Conditional grate; don't multiply fps as it's global
+- Stag cutscenes
+- nameof; Skip gg cutscene
+- Use ref field
+- Swap to Vasi
+- Rider/ReSharper 2020
+- Json Serializer Settings
+- Use Json.Net for UnencryptedSaves now that we've swapped to it.
+- Use FsmUtil extensions for pr'd code
+- Merge pull request #9 from homothetyhk/master
+- Use SimpleLogger for Unity exceptions
+- Add Dream Nail Storage to SpeedBroke
+- Some boss cutscene skips
+- Merge rando speedtech into SpeedBroke
+- More consistent naming
+- Refactor rando additions
+- Merge pull request #8 from homothetyhk/master
+- Merge branch 'master' of https://github.com/homothetyhk/HollowKnight.QoL
+- Added unload methods.
+- Various QoL fixes from randomizer ported over.
+- Added unload methods.
+- Fast menus.
+- Refactored FsmUtil entirely to be backed via state extensions, EnumerableUtil
+- Various QoL fixes from randomizer ported over.
+- Remove unused class
+- Refactor SalubraKiller
+- UsedImplicitly on base class
+- Remove extraneous message detour due to Unity errors.
+- SerializeToSetting implies implicit usage
+- Fix big elevator lever
+- Merge pull request #7 from seanpr96/master
+- Televator
+- GUID => SHA1
+- Merge pull request #6 from seanpr96/master
+- Superslides
+- Version + hash so I can't forget
+- Always enable untoggleable mods, not toggleable mods
+- FasterLoads, Rework settings to make NohardSaves not default to on.
+- Merge pull request #5 from seanpr96/master
+- No hard landings option
+- Merge pull request #4 from seanpr96/master
+- Fixed walls eating fireballs
+- Remove LogType.Error as you get PlayMaker errors which aren't valuable
+- Log Unity errors to ModLog
+- Move to subfolder instead of sln/csproj in one folder
+- Default to enabled glitches
+- FauxMod, ReflectionHelper, FixVolume, new Settings, etc
+- Fix dreamer variables
+- Naming
+- Remove 0.3f wait on save load
+- Swap from SavegameSave to BeforeSavegameSave with LoadPriority to serialize ModSettings
+- Update reflection, Prevent dumb logs.
+- Fix HoG bug where dreamRespawnScene wasn't set
+- Formatting
+- Bug fix and remove stupid shit
+- Minor change which allows QoL to work with custom save paths
+- Swapped to ModCommon version of ReflectionExtensions as it will also be using the API helper and dictionary, causing there to be no effective difference.
+- Removed game optimizations as I'm merging it into the API.
+- Merge pull request #3 from seanpr96/master
+- Dreamer hard saves
+- Unload properly
+- Added versioning
+- Monomon persistent textbox fix
+- Formatting
+- Don't break rando, pd reflection caching, few minor changes
+- why
+- Stop an annoying exception which does nothing
+- Fix for if uumuu is dead
+- Fix infected crossroads bug
+- More consistent formatting
+- boss cutscene skips
+- Merge pull request #2 from seanpr96/master
+- Downdash on diagonals makes me want to die
+- new csproj and some cleanup
+- Fix Monomon hardlock when using Rando due to preload scenes
+- ok
+- remove loaddat
+- MoreSaves fixes
+- stuff
+- IToggleableMod, Dreamers + SkipCutscenes, Starting fall
+- Merge pull request #1 from seanpr96/patch-1
+- Create FastText.cs
+- Create NoHardSaves.cs
+- Godmaster update
+- better loading of old saves
+- allow loading of old saves
+- Unencrypted Saves, bug fix
+- Optimize imports, InfinitePoP, fix white screen forever, shut up salubra log
+- game has bugs haha
+- bug begone
+- fuck this shit bug
+- unsteal speedrunning seer bug, start unencrypted saves
+- Better dream respawning
+- better mouse bindings
+- Mouse Bindings
+- Salubra
+- Initial commit
