@@ -1,4 +1,6 @@
-SpeedrunMod: 
+##### SpeedrunMod:
+- readme
+- Documented changes in readme+changelog (#1) 
 - Swap old HookEndpointManager usages to ILHook
 - lock menu cursor
 - fast toll bench animation
@@ -38,8 +40,7 @@ SpeedrunMod:
 - Merge branch 'master' of https://github.com/underlein/HollowKnight.SpeedrunMod
 - Initial commit (copy of fifty-six/HollowKnight.QoL)
 - Initial commit
-
-QOL:
+##### QOL:
 - Merge pull request #15 from AcridStingray3/master
 - SaneUumuu dreamnail, undo useless friction changes
 - Merge branch 'AcridStingray3-master'
