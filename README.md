@@ -2,10 +2,10 @@
 Hollow Knight Mod restoring patched speedtech and adding speedrunning related qol features to the current patch game.  
 Based on [HollowKnight.QoL](https://github.com/fifty-six/HollowKnight.QoL/).
 
-### List of Changes
+## List of Changes
 Room-specific changes have the scenename added in the description.
 
-##### Restored Speedtech
+#### Restored Speedtech
 - Opening inventory anywhere for inventory drops
 - 1.2.2.1 Explosion Pogo
 - All 1.2.2.1 Lever Skips, including Shade Soul Lever Skip (Ruins1_31)
@@ -31,7 +31,7 @@ Room-specific changes have the scenename added in the description.
   - Superslides
   - Televator
 
-##### RNG Changes
+#### RNG Changes
 - Elder Baldurs will always spawn a Baldur if possible
 - King's Pass Vengeflies will stay in fixed positions (Tutorial_01)
 - Gruzzer spawns are consistent and will make both middle and right side Gruzzer drop possible (Crossroads_07)
@@ -40,7 +40,7 @@ Room-specific changes have the scenename added in the description.
 - Reduced Trigger Range for Furious Vengeflies to make their behaviour closer to 1.2.2.1 behaviour
 - The Shade will never try to use spells
 
-##### Speedrun QoL
+#### Speedrun QoL
 - NPC Dialogue can be skipped immediately
 - All relics can be sold to Lemm at once
 - Dreamer cutscenes are skipped
@@ -69,7 +69,7 @@ Room-specific changes have the scenename added in the description.
 - Gruz Mother has shortened waiting time between dying and spawning Gruzzers
 - All breakable objects are now pogoable
 
-##### Gameplay QoL
+#### Gameplay QoL
 - Fast loading screens and menus
 - Fireballs won't get eaten by walls close to the player anymore
 - Several volume scaling/normalization fixes
@@ -78,7 +78,7 @@ Room-specific changes have the scenename added in the description.
 - (Optional) Mouse button keybindings
 - (Optional) Lock mouse cursor to game window
 
-### Contributors
+## Contributors
 Thanks to everyone making this possible by contributing to this project or the base QoL mod:
 - 56
 - seresharp
