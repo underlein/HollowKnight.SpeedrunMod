@@ -1,4 +1,5 @@
 #### [underlein/HollowKnight.SpeedrunMod](https://github.com/underlein/HollowKnight.SpeedrunMod/)
+- fast trap bench
 - changelog
 - readme
 - readme

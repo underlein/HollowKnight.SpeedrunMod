@@ -252,6 +252,17 @@ namespace SpeedrunMod.Modules {
 
                     break;
                 }
+
+                case "Fade" when self.name == "RestBench Spider": {
+                    self.GetState("Idle").ChangeTransition("FIRST STRUGGLE", "Start Fade");
+                    self.GetState("Finish Fade").ChangeTransition("FINISHED", "Capture End");
+
+                    string[] waitStates = {"Start Fade", "Capture End", "Fade Up", "Land"};
+                    foreach (string waitState in waitStates) {
+                        self.GetState(waitState).GetAction<Wait>().time = 0.5f;
+                    }
+                    break;
+                }
             }
 
             orig(self);

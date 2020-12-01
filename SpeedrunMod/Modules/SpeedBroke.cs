@@ -11,7 +11,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Vasi;
 using UObject = UnityEngine.Object;
-using ReflectionHelper = Modding.ReflectionHelper;
 using USceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace SpeedrunMod.Modules {
@@ -190,7 +189,7 @@ namespace SpeedrunMod.Modules {
                 // pogaxe miner
                 // makes pogaxe miner go backwards and stall for a bit the first time it gets triggered after loading the room
                 // after the first trigger it has the normal behaviour
-                case "Zombie Miner" when self.name == "Zombie Miner 1 (3)": {
+                case "Zombie Miner" when self.name == "Zombie Miner 1 (3)" && GameManager.instance.sceneName == "Mines_03": {
                     FsmBool firstTrigger = new FsmBool("FirstTrigger") {Value = true};
                     self.FsmVariables.BoolVariables = self.FsmVariables.BoolVariables.Append(firstTrigger).ToArray();
 
