@@ -298,20 +298,9 @@ namespace SpeedrunMod.Modules {
             ctrl.GetState("Arrive Pause").RemoveAction<Wait>();
             ctrl.GetState("Activate").RemoveAction<Wait>();
 
-            var anim = stag.GetComponent<tk2dSpriteAnimator>();
-
-            // Speed up the actual arrival animation.
-            anim.GetClipByName("Arrive").fps = 600;
-
-            // Speed up the grate coming up, mostly a thing because of randomizer.
-            GameObject grate = ctrl.GetState("Open Grate").GetAction<Tk2dPlayAnimationWithEvents>().gameObject.GameObject.Value;
-
-            if (grate == null)
-                yield break;
-
-            var grateAnim = grate.GetComponent<tk2dSpriteAnimator>();
-
-            grateAnim.GetClipByName("Grate_disappear").fps = 600;
+            // speed up arrival animation and remove arrival audio
+            stag.GetComponent<tk2dSpriteAnimator>().GetClipByName("Arrive").fps = 24; // 1.6x speed, 15 default
+            ctrl.GetState("Arrive Pause").RemoveAction<AudioPlayerOneShotSingle>();
         }
 
         private static IEnumerator StatueWait(Scene to) {

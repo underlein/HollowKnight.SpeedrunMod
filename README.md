@@ -54,6 +54,7 @@ Room-specific changes have the scenename added in the description.
   - Howling Wraiths pickup
   - Abyss Shriek pickup
   - Shade Cloak pickup
+  - Sitting on the Beast's Den trap bench
   - Black Egg Door opening
   - Toll Benches spawning
   - The Last Stag arriving
