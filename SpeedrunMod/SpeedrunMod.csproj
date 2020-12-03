@@ -75,6 +75,7 @@
         <Compile Include="Modules\FixDashmaster.cs" />
         <Compile Include="Modules\FixFireballs.cs" />
         <Compile Include="Modules\FixRng.cs" />
+        <Compile Include="Modules\FixTerrain.cs" />
         <Compile Include="Modules\FixVolume.cs" />
         <Compile Include="Modules\InfinitePoP.cs" />
         <Compile Include="Modules\LemmSellAll.cs" />

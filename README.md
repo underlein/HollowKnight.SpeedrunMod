@@ -26,6 +26,7 @@ Room-specific changes have the scenename added in the description.
   - Queens Gardens thorn hazard respawn is extended through the thorns above again (Fungus3_05)
   - Queens Gardens Crystal Dash into lower Mantis Petra room is possible again (Fungus3_08)
   - Entering the NKG fight no longer checks if Grimmchild is equipped (Grimm_Main_Tent)
+  - Adjusted many broken or inaccurate wall and terrain hitboxes
 - (Optional) Glitched Speedtech
   - Quick Map Storage
   - Superslides
