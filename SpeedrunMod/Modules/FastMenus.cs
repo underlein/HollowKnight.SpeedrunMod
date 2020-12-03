@@ -39,6 +39,7 @@ namespace SpeedrunMod.Modules {
 
             On.UIManager.FadeInCanvasGroupAlpha += FadeInCanvasGroupAlpha;
             On.UIManager.FadeOutCanvasGroup += FadeOutCanvasGroup;
+            On.UIManager.FadeInCanvasGroup += FadeInCanvasGroup;
             On.UIManager.FadeInSprite += FadeInSprite;
             On.UIManager.FadeOutSprite += FadeOutSprite;
             On.UnityEngine.UI.SaveSlotButton.FadeInCanvasGroupAfterDelay += FadeInAfterDelay;
@@ -53,6 +54,7 @@ namespace SpeedrunMod.Modules {
 
             On.UIManager.FadeInCanvasGroupAlpha -= FadeInCanvasGroupAlpha;
             On.UIManager.FadeOutCanvasGroup -= FadeOutCanvasGroup;
+            On.UIManager.FadeInCanvasGroup -= FadeInCanvasGroup;
             On.UIManager.FadeInSprite -= FadeInSprite;
             On.UIManager.FadeOutSprite -= FadeOutSprite;
             On.UnityEngine.UI.SaveSlotButton.FadeInCanvasGroupAfterDelay -= FadeInAfterDelay;
@@ -123,6 +125,14 @@ namespace SpeedrunMod.Modules {
             cg.interactable = false;
             cg.alpha = 0f;
             cg.gameObject.SetActive(false);
+
+            yield break;
+        }
+        
+        private static IEnumerator FadeInCanvasGroup(On.UIManager.orig_FadeInCanvasGroup orig, UIManager self, CanvasGroup cg) {
+            cg.interactable = true;
+            cg.alpha = 1;
+            cg.gameObject.SetActive(true);
 
             yield break;
         }
