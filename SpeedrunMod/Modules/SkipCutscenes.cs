@@ -229,6 +229,7 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
 
+                // fast toll benches
                 case "Toll Machine Bench" when self.name == "Toll Machine Bench": {
                     // set wait times for each state
                     self.GetState("Pause Before Box Drop").GetAction<Wait>().time = 0.1f;
@@ -253,6 +254,7 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
 
+                // fast trap bench
                 case "Fade" when self.name == "RestBench Spider": {
                     self.GetState("Idle").ChangeTransition("FIRST STRUGGLE", "Start Fade");
                     self.GetState("Finish Fade").ChangeTransition("FINISHED", "Capture End");
@@ -260,6 +262,17 @@ namespace SpeedrunMod.Modules {
                     string[] waitStates = {"Start Fade", "Capture End", "Fade Up", "Land"};
                     foreach (string waitState in waitStates) {
                         self.GetState(waitState).GetAction<Wait>().time = 0.5f;
+                    }
+                    break;
+                }
+                
+                // fast lifeblood door
+                case "Control" when self.name == "Blue Plinth": {
+                    self.GetState("Send Event").GetAction<Wait>().time = 0.15f; // wait inbetween blue heart count increment
+
+                    string[] waitStates = {"Start Pause", "Glow Start", "Complete Pause", "Final Glow"};
+                    foreach (string waitState in waitStates) {
+                        self.GetState(waitState).RemoveAction<Wait>();
                     }
                     break;
                 }

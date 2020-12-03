@@ -1,4 +1,5 @@
 #### [underlein/HollowKnight.SpeedrunMod](https://github.com/underlein/HollowKnight.SpeedrunMod/)
+- fast lifeblood door
 - terrain fixes
 - reasonably fast stag
 - fast trap bench
