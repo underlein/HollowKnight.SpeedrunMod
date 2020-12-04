@@ -467,7 +467,8 @@ namespace SpeedrunMod.Modules {
                     continue;
                 }
 
-                if (GameManager.instance.sceneName == "Crossroads_ShamanTemple" && nonBounce.gameObject.name.StartsWith("Plank Solid Terrain")) {
+                // horizontal planks in ancestral and crystalised mound
+                if (nonBounce.gameObject.name.StartsWith("Plank Solid Terrain")) {
                     continue;
                 }
 
