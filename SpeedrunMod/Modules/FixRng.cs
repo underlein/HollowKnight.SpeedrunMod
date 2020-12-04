@@ -77,6 +77,10 @@ namespace SpeedrunMod.Modules {
                     HeroController.instance.StartCoroutine(Tutorial_01());
                     break;
                 }
+                case "Fungus2_11": {
+                    HeroController.instance.StartCoroutine(Fungus2_11());
+                    break;
+                }
             }
         }
 
@@ -96,8 +100,14 @@ namespace SpeedrunMod.Modules {
             GameObject buzzer = GameObject.Find("Buzzer");
             RemoveIdleBuzzSpeed(buzzer.LocateMyFSM("chaser").GetState("Idle").GetAction<IdleBuzz>());
             buzzer.transform.position = new Vector3(88, 32.4f);
-            
+
             RemoveIdleBuzzSpeed(GameObject.Find("Buzzer 1").LocateMyFSM("chaser").GetState("Idle").GetAction<IdleBuzz>());
+        }
+
+        private static IEnumerator Fungus2_11() {
+            yield return null;
+
+            GameObject.Find("Fungus Flyer").transform.position = new Vector3(12.6f, 41f);
         }
 
         private static void RemoveIdleBuzzSpeed(IdleBuzz idleBuzz) {
