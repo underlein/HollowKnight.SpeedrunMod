@@ -189,7 +189,7 @@ namespace SpeedrunMod.Modules {
                 // pogaxe miner
                 // makes pogaxe miner go backwards and stall for a bit the first time it gets triggered after loading the room
                 // after the first trigger it has the normal behaviour
-                case "Zombie Miner" when self.name == "Zombie Miner 1 (3)" && GameManager.instance.sceneName == "Mines_03": {
+                case "Zombie Miner" when self.name == "Zombie Miner 1 (3)" && self.gameObject.scene.name == "Mines_03": {
                     FsmBool firstTrigger = new FsmBool("FirstTrigger") {Value = true};
                     self.FsmVariables.BoolVariables = self.FsmVariables.BoolVariables.Append(firstTrigger).ToArray();
 
@@ -239,7 +239,7 @@ namespace SpeedrunMod.Modules {
                 }
 
                 // gruz mother gruzzer geo
-                case "Bouncer Control" when self.name.StartsWith("Fly") && GameManager.instance.sceneName == "Crossroads_04": {
+                case "Bouncer Control" when self.name.StartsWith("Fly") && self.gameObject.scene.name == "Crossroads_04": {
                     self.gameObject.GetComponent<HealthManager>().SetGeoSmall(2);
                     break;
                 }
@@ -476,8 +476,7 @@ namespace SpeedrunMod.Modules {
         }
 
         private static void NkgWithoutGrimmchild(On.DeactivateIfPlayerdataFalse.orig_OnEnable orig, DeactivateIfPlayerdataFalse self) {
-            if (self.gameObject.name == "Dream Enter Grimm"
-                && (GameManager.instance.sceneName == "Town" || GameManager.instance.sceneName == "Grimm_Main_Tent" || GameManager.instance.sceneName == "Grimm_Nightmare")) {
+            if (self.gameObject.name == "Dream Enter Grimm" && self.gameObject.scene.name == "Grimm_Main_Tent") {
                 return;
             }
 

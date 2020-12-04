@@ -30,7 +30,7 @@ namespace SpeedrunMod.Modules {
                     break;
                 }
                 // gruz drop room
-                case "Bouncer Control" when self.name.StartsWith("Fly") && GameManager.instance.sceneName == "Crossroads_07": {
+                case "Bouncer Control" when self.name.StartsWith("Fly") && self.gameObject.scene.name == "Crossroads_07": {
                     HeroController.instance.StartCoroutine(FixGruzDrop(self));
                     break;
                 }
